@@ -1,0 +1,6 @@
+bricks:
+  flutter_core:
+    git:
+      url: "https://github.com/dethariyanikunj/flutter_core.git"
+      path: 
+      ref: main
