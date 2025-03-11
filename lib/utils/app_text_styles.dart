@@ -25,6 +25,18 @@ class AppTextStyle {
         ),
       );
 
+  static TextStyle get textSize14Regular => _getTextStyle(
+    fontSize: AppDimens.dimens14.sp,
+    color: AppColors.colorWhite,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get textSize14SemiBold => _getTextStyle(
+    fontSize: AppDimens.dimens14.sp,
+    color: AppColors.colorWhite,
+    fontWeight: FontWeight.w600,
+  );
+
   static TextStyle get textSize16Bold => _getTextStyle(
         fontSize: AppDimens.dimens16.sp,
         color: AppColors.colorWhite,

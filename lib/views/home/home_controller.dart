@@ -80,6 +80,27 @@ class HomeController extends GetxController {
     AppProgressDialog.hide();
   }
 
+  Future fetchCurrentWeatherThroughCity(String city) async {
+    AppProgressDialog.show();
+    final response =
+        await ApiServiceConfig.apiService.getRequest<WeatherApiResponse>(
+      ApiEndpoints.currentWeather,
+      queryParams: {
+        'key': dotenv.get('WEATHER_API_KEY'),
+        'q': city.trim(),
+      },
+      fromJson: (data) => WeatherApiResponse.fromJson(data),
+    );
+    if (response.isSuccess) {
+      _bindWeatherInformation(response.data);
+    } else {
+      AppToastView.showErrorToast(
+        message: response.error?.message,
+      );
+    }
+    AppProgressDialog.hide();
+  }
+
   void _bindWeatherInformation(WeatherApiResponse? weatherData) {
     if (weatherData != null) {
       final StringBuffer locationStringBuffer = StringBuffer();
@@ -109,6 +130,7 @@ class HomeController extends GetxController {
         address: locationStringBuffer.toString().trim(),
         weatherType: getWeatherType(
           weatherData.current?.condition?.code,
+          weatherData.current?.isDay != 1,
         ),
         inCelsius: weatherData.current?.tempC,
         inFahrenheit: weatherData.current?.tempF,
@@ -117,16 +139,18 @@ class HomeController extends GetxController {
     }
   }
 
-  WeatherType getWeatherType(int? conditionCode) {
+  WeatherType getWeatherType(int? conditionCode, bool isNight) {
     if (conditionCode != null) {
-      return WeatherType.fromCode(conditionCode);
+      return WeatherType.fromCode(conditionCode, isNight);
     }
     return WeatherType.unknown;
   }
 
   Color getBgColorsFromWeatherType() {
     final weatherType = weatherInfo.value?.weatherType;
-    if (weatherType == WeatherType.sunny) {
+    if (weatherType == WeatherType.clearNight) {
+      return AppColors.colorBlack;
+    } else if (weatherType == WeatherType.sunny) {
       return AppColors.colorSunny;
     } else if (weatherType == WeatherType.rainy) {
       return AppColors.colorRainy;
@@ -140,7 +164,9 @@ class HomeController extends GetxController {
 
   String getAssetPathFromWeatherType() {
     final weatherType = weatherInfo.value?.weatherType;
-    if (weatherType == WeatherType.sunny) {
+    if (weatherType == WeatherType.clearNight) {
+      return AppAssets.icClearNight;
+    } else if (weatherType == WeatherType.sunny) {
       return AppAssets.icSunny;
     } else if (weatherType == WeatherType.rainy) {
       return AppAssets.icRainy;

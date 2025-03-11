@@ -26,12 +26,30 @@ class HomePage extends GetView<HomeController> {
               right: AppDimens.dimensScreenHorizontalMargin.w,
               top: AppDimens.dimens20.h,
             ),
-            child: Column(
-              children: [
-                _searchByCityWidget(),
-                _verticalSpacing30(),
-                _weatherIconWidget(),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _appBarWidget(),
+                  _verticalSpacing30(),
+                  _searchByCityWidget(),
+                  _verticalSpacing30(),
+                  _weatherIconWidget(),
+                  _verticalSpacing15(),
+                  _weatherConditionWidget(),
+                  _verticalSpacing15(),
+                  _weatherInCelsiusWidget(),
+                  _verticalSpacing15(),
+                  _weatherInFahrenheitWidget(),
+                  _verticalSpacing15(),
+                  _weatherAddressWidget(),
+                  _verticalSpacing15(),
+                  _weatherLatitudeWidget(),
+                  _verticalSpacing15(),
+                  _weatherLongitudeWidget(),
+                  _verticalSpacing15(),
+                ],
+              ),
             ),
           ),
         ),
@@ -39,9 +57,21 @@ class HomePage extends GetView<HomeController> {
     });
   }
 
+  Widget _verticalSpacing15() {
+    return SizedBox(
+      height: AppDimens.dimens15.h,
+    );
+  }
+
   Widget _verticalSpacing30() {
     return SizedBox(
       height: AppDimens.dimens30.h,
+    );
+  }
+
+  Widget _appBarWidget() {
+    return AppScreenTitleBar(
+      title: LanguageKey.appName.tr,
     );
   }
 
@@ -52,7 +82,9 @@ class HomePage extends GetView<HomeController> {
       textInputAction: TextInputAction.search,
       textInputType: TextInputType.text,
       hintText: LanguageKey.searchByCity.tr,
-      onFieldSubmitted: (value) {},
+      onFieldSubmitted: (value) {
+        controller.fetchCurrentWeatherThroughCity(value);
+      },
     );
   }
 
@@ -65,5 +97,83 @@ class HomePage extends GetView<HomeController> {
         color: AppColors.colorWhite,
       );
     });
+  }
+
+  Widget _weatherConditionWidget() {
+    return Obx(() {
+      return _titleValueWidget(
+        LanguageKey.weatherCondition.tr,
+        controller.weatherInfo.value?.weatherCondition,
+      );
+    });
+  }
+
+  Widget _weatherInCelsiusWidget() {
+    return Obx(() {
+      return _titleValueWidget(
+        LanguageKey.weatherInCelsius.tr,
+        controller.weatherInfo.value?.inCelsius?.toString(),
+      );
+    });
+  }
+
+  Widget _weatherInFahrenheitWidget() {
+    return Obx(() {
+      return _titleValueWidget(
+        LanguageKey.weatherInFahrenheit.tr,
+        controller.weatherInfo.value?.inFahrenheit?.toString(),
+      );
+    });
+  }
+
+  Widget _weatherAddressWidget() {
+    return Obx(() {
+      return _titleValueWidget(
+        LanguageKey.address.tr,
+        controller.weatherInfo.value?.address,
+      );
+    });
+  }
+
+  Widget _weatherLatitudeWidget() {
+    return Obx(() {
+      return _titleValueWidget(
+        LanguageKey.latitude.tr,
+        controller.weatherInfo.value?.latitude?.toString(),
+      );
+    });
+  }
+
+  Widget _weatherLongitudeWidget() {
+    return Obx(() {
+      return _titleValueWidget(
+        LanguageKey.longitude.tr,
+        controller.weatherInfo.value?.longitude?.toString(),
+      );
+    });
+  }
+
+  Widget _titleValueWidget(String title, String? value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: AppTextStyle.textSize14Regular.copyWith(
+            color: AppColors.colorWhite,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value ?? '',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyle.textSize14SemiBold.copyWith(
+              color: AppColors.colorWhite,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

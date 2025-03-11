@@ -3,14 +3,16 @@ enum WeatherType {
   cloudy,
   rainy,
   snowy,
+  clearNight,
   unknown;
 
-  static WeatherType fromCode(int code) {
+  static WeatherType fromCode(int code, bool isNight) {
     if (code == 1000) {
-      return WeatherType.sunny;
+      return isNight ? WeatherType.clearNight : WeatherType.sunny;
     } else if (code >= 1003 && code <= 1147) {
       return WeatherType.cloudy;
-    } else if ((code >= 1063 && code <= 1276) && !(code >= 1066 && code <= 1282)) {
+    } else if ((code >= 1063 && code <= 1276) &&
+        !(code >= 1066 && code <= 1282)) {
       return WeatherType.rainy;
     } else if (code >= 1066 && code <= 1282) {
       return WeatherType.snowy;
@@ -19,7 +21,6 @@ enum WeatherType {
     }
   }
 }
-
 
 /*
 https://www.weatherapi.com/docs/weather_conditions.json
@@ -313,7 +314,6 @@ https://www.weatherapi.com/docs/weather_conditions.json
 "icon" : 395
 }
 ]*/
-
 
 /*Sunny (Clear, Mostly Clear)
 •	Codes: 1000

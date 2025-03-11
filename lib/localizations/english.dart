@@ -10,7 +10,13 @@ class English {
       LanguageKey.noInternetConnection:
           'It seems you are not connected to the internet.',
       LanguageKey.oopsSomethingWentWrong: 'Oops! Something went wrong.',
-      LanguageKey.searchByCity: 'Search weather with typing city'
+      LanguageKey.searchByCity: 'Search weather with typing city',
+      LanguageKey.latitude: 'Latitude',
+      LanguageKey.longitude: 'Longitude',
+      LanguageKey.address: 'Address',
+      LanguageKey.weatherCondition: 'Weather Condition',
+      LanguageKey.weatherInCelsius: 'Weather Celsius',
+      LanguageKey.weatherInFahrenheit: 'Weather Fahrenheit',
     };
   }
 }
