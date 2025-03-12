@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:weather/data/envs/weather_type.dart';
 
 import '../../localizations/language_keys.dart';
 import '../../utils/app_utils.dart';
 import '../../widgets/app_widget.dart';
-import './home_controller.dart';
+import './history_controller.dart';
 
-class HomePage extends GetView<HomeController> {
-  const HomePage({
+class HistoryPage extends GetView<HistoryController> {
+  const HistoryPage({
     super.key,
   });
 
   Color _getWidgetColor() {
-    return controller.weatherInfo.value?.weatherType == WeatherType.clearNight
-        ? AppColors.colorWhite
-        : AppColors.colorBlack;
+    return AppColors.colorBlack;
   }
 
   @override
@@ -27,28 +24,21 @@ class HomePage extends GetView<HomeController> {
           children: [
             _appBarWidget(),
             Expanded(
-              child: Obx(() {
-                return ColoredBox(
-                  color: controller.getBgColorsFromWeatherType(),
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.only(
-                      left: AppDimens.dimensScreenHorizontalMargin.w,
-                      right: AppDimens.dimensScreenHorizontalMargin.w,
-                      top: AppDimens.dimens20.h,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _verticalSpacing30(),
-                        _searchByCityWidget(),
-                        _verticalSpacing30(),
-                        _weatherDetailsWidget(),
-                        _verticalSpacing15(),
-                      ],
-                    ),
-                  ),
-                );
-              }),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  left: AppDimens.dimensScreenHorizontalMargin.w,
+                  right: AppDimens.dimensScreenHorizontalMargin.w,
+                  top: AppDimens.dimens20.h,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _verticalSpacing30(),
+                    _weatherDetailsWidget(),
+                    _verticalSpacing15(),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -76,37 +66,16 @@ class HomePage extends GetView<HomeController> {
 
   Widget _appBarWidget() {
     return AppScreenTitleBar(
-      title: LanguageKey.appName.tr.toUpperCase(),
+      title: LanguageKey.history.tr.toUpperCase(),
       actionWidget: _historyWidget(),
-      isBackButtonVisible: false,
     );
   }
 
   Widget _historyWidget() {
-    return GestureDetector(
-      onTap: () {
-        controller.navigateToWeatherHistory();
-      },
-      child: AppImageView(
-        imagePath: AppAssets.icHistory,
-        width: AppDimens.dimens25.w,
-        height: AppDimens.dimens25.h,
-      ),
-    );
-  }
-
-  Widget _searchByCityWidget() {
-    return AppOutlinedInputField(
-      controller: controller.cityTextEditingController,
-      focusNode: controller.cityFocusNode,
-      textInputAction: TextInputAction.search,
-      textInputType: TextInputType.text,
-      hintText: LanguageKey.searchByCity.tr,
-      onFieldSubmitted: (value) {
-        if (value.trim().isNotEmpty) {
-          controller.fetchCurrentWeatherThroughCity(value);
-        }
-      },
+    return AppImageView(
+      imagePath: AppAssets.icHistory,
+      width: AppDimens.dimens25.w,
+      height: AppDimens.dimens25.h,
     );
   }
 
@@ -132,7 +101,7 @@ class HomePage extends GetView<HomeController> {
               ],
             )
           : Text(
-              controller.unknownWeatherInfoMessage.value,
+              LanguageKey.noHistory.tr,
               style: AppTextStyle.textSize16Bold,
             );
     });

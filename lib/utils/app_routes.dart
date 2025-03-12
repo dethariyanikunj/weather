@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 
+import '../views/history/history.dart';
 import '../views/home/home.dart';
 import '../views/splash/splash.dart';
-import '../widgets/app_widget.dart';
 
 // All routes for app pages are defined here
 class AppRoutes {
   static const String splashPage = '/splash_page';
   static const String homePage = '/home_page';
-  static const String noInternetPage = '/no_internet_page';
+  static const String historyPage = '/history_page';
 
   static final List<GetPage> pages = [
     GetPage(
@@ -22,8 +22,9 @@ class AppRoutes {
       binding: HomeBinding(),
     ),
     GetPage(
-      name: noInternetPage,
-      page: () => const AppNoInternetView(),
+      name: historyPage,
+      page: () => const HistoryPage(),
+      binding: HistoryBinding(),
     ),
   ];
 }

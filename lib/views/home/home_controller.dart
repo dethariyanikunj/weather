@@ -19,9 +19,12 @@ class HomeController extends GetxController {
   final FocusNode cityFocusNode = FocusNode();
   LocationModel? locationInfo;
   Rxn<WeatherInfo> weatherInfo = Rxn<WeatherInfo>();
+  RxString unknownWeatherInfoMessage = ''.obs;
 
   @override
   void onInit() {
+    // Network connectivity check
+    ConnectivityManager.instance.setConnectivityListener();
     _checkForLocationPermission();
     super.onInit();
   }
@@ -73,6 +76,9 @@ class HomeController extends GetxController {
     if (response.isSuccess) {
       _bindWeatherInformation(response.data);
     } else {
+      weatherInfo.value = null;
+      unknownWeatherInfoMessage.value =
+          response.error?.message ?? LanguageKey.oopsSomethingWentWrong.tr;
       AppToastView.showErrorToast(
         message: response.error?.message,
       );
@@ -94,6 +100,9 @@ class HomeController extends GetxController {
     if (response.isSuccess) {
       _bindWeatherInformation(response.data);
     } else {
+      weatherInfo.value = null;
+      unknownWeatherInfoMessage.value =
+          response.error?.message ?? LanguageKey.oopsSomethingWentWrong.tr;
       AppToastView.showErrorToast(
         message: response.error?.message,
       );
@@ -136,6 +145,7 @@ class HomeController extends GetxController {
         inFahrenheit: weatherData.current?.tempF,
         weatherCondition: weatherData.current?.condition?.text,
       );
+      PrefUtils.saveWeatherInfo(weatherInfo.value!);
     }
   }
 
@@ -147,35 +157,17 @@ class HomeController extends GetxController {
   }
 
   Color getBgColorsFromWeatherType() {
-    final weatherType = weatherInfo.value?.weatherType;
-    if (weatherType == WeatherType.clearNight) {
-      return AppColors.colorBlack;
-    } else if (weatherType == WeatherType.sunny) {
-      return AppColors.colorSunny;
-    } else if (weatherType == WeatherType.rainy) {
-      return AppColors.colorRainy;
-    } else if (weatherType == WeatherType.cloudy) {
-      return AppColors.colorCloudy;
-    } else if (weatherType == WeatherType.snowy) {
-      return AppColors.colorSnowy;
-    }
-    return AppColors.colorUnknown;
+    return weatherInfo.value?.getBgColorsFromWeatherType() ??
+        AppColors.colorUnknown;
   }
 
   String getAssetPathFromWeatherType() {
-    final weatherType = weatherInfo.value?.weatherType;
-    if (weatherType == WeatherType.clearNight) {
-      return AppAssets.icClearNight;
-    } else if (weatherType == WeatherType.sunny) {
-      return AppAssets.icSunny;
-    } else if (weatherType == WeatherType.rainy) {
-      return AppAssets.icRainy;
-    } else if (weatherType == WeatherType.cloudy) {
-      return AppAssets.icCloudy;
-    } else if (weatherType == WeatherType.snowy) {
-      return AppAssets.icSnowy;
-    }
-    return AppAssets.icUnknown;
+    return weatherInfo.value?.getAssetPathFromWeatherType() ??
+        AppAssets.icUnknown;
+  }
+
+  void navigateToWeatherHistory() {
+    Get.toNamed(AppRoutes.historyPage);
   }
 
   @override

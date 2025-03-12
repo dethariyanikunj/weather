@@ -1,4 +1,0 @@
-enum ToolTipArrowPosition {
-  top,
-  bottom,
-}

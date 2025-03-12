@@ -17,6 +17,8 @@ class English {
       LanguageKey.weatherCondition: 'Weather Condition',
       LanguageKey.weatherInCelsius: 'Weather Celsius',
       LanguageKey.weatherInFahrenheit: 'Weather Fahrenheit',
+      LanguageKey.history: 'History',
+      LanguageKey.noHistory: 'Weather history is empty!',
     };
   }
 }

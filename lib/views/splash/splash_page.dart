@@ -27,7 +27,7 @@ class SplashPage extends GetView<SplashController> {
               ),
               Obx(
                 () => Text(
-                  controller.appName.value,
+                  controller.appName.value.toUpperCase(),
                   style: AppTextStyle.textSize24SemiBold.copyWith(
                     color: AppColors.colorWhite,
                   ),

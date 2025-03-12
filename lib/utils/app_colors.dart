@@ -25,5 +25,5 @@ class AppColors {
   static const Color colorCloudy = Color(0xffA9A9A9);
   static const Color colorRainy = Color(0xff4682B4);
   static const Color colorSnowy = Color(0xffE0F7FA);
-  static const Color colorUnknown = Color(0xff808080);
+  static const Color colorUnknown = Color(0xffFFFFFF);
 }

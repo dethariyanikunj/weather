@@ -9,4 +9,5 @@ class AppAssets {
   static const String icSnowy = '${basePath}ic_snowy.svg';
   static const String icUnknown = '${basePath}ic_unknown.svg';
   static const String icClearNight = '${basePath}ic_clear_night.svg';
+  static const String icHistory = '${basePath}ic_history.svg';
 }

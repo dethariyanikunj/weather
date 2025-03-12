@@ -17,7 +17,7 @@ class ApiError {
   factory ApiError.fromDioError(DioException e) {
     try {
       return ApiError(
-        message: ApiErrorResponse.fromJson(e.response?.data).message ??
+        message: ApiErrorResponse.fromJson(e.response?.data).error?.message ??
             e.response?.data.toString() ??
             e.message ??
             'Unknown error',

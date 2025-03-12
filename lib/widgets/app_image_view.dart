@@ -4,14 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../const/app_const.dart';
 import '../utils/app_utils.dart';
 
 extension ImageTypeExtension on String {
   ImageType get imageType {
-    if (startsWith(AppSkeletonConst.mockImagePath)) {
-      return ImageType.skeletonDummyPath;
-    } else if (trim().isEmpty) {
+    if (trim().isEmpty) {
       return ImageType.unknown;
     } else if ((startsWith('http') || startsWith('https')) &&
         endsWith('.svg')) {
@@ -196,12 +193,6 @@ class AppImageView extends StatelessWidget {
           );
         case ImageType.unknown:
           return _placeHolderImage();
-        case ImageType.skeletonDummyPath:
-          return Container(
-            height: height,
-            width: width,
-            color: AppSkeletonConst.defaultBaseColor,
-          );
         case ImageType.png:
         default:
           return Image.asset(

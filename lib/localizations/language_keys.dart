@@ -12,4 +12,6 @@ class LanguageKey {
   static const String weatherCondition = 'weather_condition';
   static const String weatherInCelsius = 'weather_celsius';
   static const String weatherInFahrenheit = 'weather_fahrenheit';
+  static const String history = 'history';
+  static const String noHistory = 'no_history';
 }

@@ -32,9 +32,6 @@ void main() async {
   // Theme
   AppThemeUtils().setLightStatusBarStyle();
 
-  // Network
-  ConnectivityManager.instance.setConnectivityListener();
-
   // App transition config
   Get.config(
     defaultTransition: Transition.fadeIn,
@@ -58,26 +55,7 @@ class MyApp extends StatelessWidget {
           config: const ToastificationConfig(
             itemWidth: double.infinity,
           ),
-          child: Obx(() {
-            // Check connectivity state
-            if (!ConnectivityManager.instance.isNetConnected.value) {
-              // Show No Internet Screen if disconnected
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (Get.currentRoute != AppRoutes.noInternetPage) {
-                  Get.toNamed(
-                    AppRoutes.noInternetPage,
-                    preventDuplicates: true,
-                  );
-                }
-              });
-            } else {
-              // Close No Internet Screen when connected
-              if (Get.currentRoute == AppRoutes.noInternetPage) {
-                Get.back();
-              }
-            }
-            return _materialAppWidget();
-          }),
+          child: _materialAppWidget(),
         );
       },
     );
