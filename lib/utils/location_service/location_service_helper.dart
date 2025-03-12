@@ -23,10 +23,22 @@ class LocationServiceHelper {
     return true;
   }
 
-  /// Gets the user's current location using new LocationSettings
+  /// Prompts user to enable location services if disabled
+  Future<bool> checkAndRequestLocationServices() async {
+    bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!isLocationEnabled) {
+      return await Geolocator.openLocationSettings(); // Opens system settings to enable GPS
+    }
+    return true;
+  }
+
+  /// Gets the user's current location
   Future<LocationModel?> getCurrentLocation() async {
     bool hasPermission = await _handleLocationPermission();
     if (!hasPermission) return null;
+
+    bool isEnabled = await checkAndRequestLocationServices();
+    if (!isEnabled) return null; // User did not enable location
 
     LocationSettings locationSettings;
 

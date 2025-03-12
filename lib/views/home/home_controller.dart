@@ -36,23 +36,27 @@ class HomeController extends GetxController {
     }
   }
 
-  Future _fetchUsersCurrentLocation() async {
+  Future<void> _fetchUsersCurrentLocation() async {
     LocationServiceHelper locationService = LocationServiceHelper();
-    if (await locationService.isLocationEnabled()) {
-      LocationModel? location = await locationService.getCurrentLocation();
-      if (location != null) {
-        await _fetchCurrentWeatherThroughLocation(
-          location.latitude,
-          location.longitude,
-        );
-      } else {
-        AppToastView.showErrorToast(
-          message: LanguageKey.locationPermissionDeniedMessage.tr,
-        );
-      }
-    } else {
+
+    // Check and request location services if disabled
+    bool isEnabled = await locationService.checkAndRequestLocationServices();
+    if (!isEnabled) {
       AppToastView.showErrorToast(
         message: LanguageKey.locationServiceDisabled.tr,
+      );
+      return;
+    }
+    // Fetch user's current location
+    LocationModel? location = await locationService.getCurrentLocation();
+    if (location != null) {
+      await _fetchCurrentWeatherThroughLocation(
+        location.latitude,
+        location.longitude,
+      );
+    } else {
+      AppToastView.showErrorToast(
+        message: LanguageKey.locationPermissionDeniedMessage.tr,
       );
     }
   }
